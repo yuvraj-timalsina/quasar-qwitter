@@ -1,54 +1,64 @@
 <template>
   <q-layout view="lHr lpR fFf">
 
-    <q-header bordered class="bg-primary text-white">
+    <q-header bordered class="bg-white text-black">
       <q-toolbar>
-        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
+        <q-btn dense flat icon="menu" round @click="toggleLeftDrawer"/>
 
-        <q-toolbar-title>
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
-          </q-avatar>
-          Title
+        <q-toolbar-title class="text-weight-bold">
+          Qwitter
         </q-toolbar-title>
 
-        <q-btn dense flat round icon="menu" @click="toggleRightDrawer" />
       </q-toolbar>
     </q-header>
 
-    <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
+    <q-drawer v-model="leftDrawerOpen" :width="282" bordered show-if-above side="left">
       <!-- drawer content -->
+      <q-icon class="q-pa-md" color="primary" name="fa-brands fa-earlybirds" size="lg"/>
+
+      <!-- left nav links -->
+      <q-list>
+
+        <q-item v-ripple :to="{name: 'Home'}" clickable>
+          <q-item-section avatar>
+            <q-icon name="home" size="md"/>
+          </q-item-section>
+          <q-item-section class="text-h6 text-weight-bold">Home</q-item-section>
+        </q-item>
+
+        <q-item v-ripple :to="{name: 'About'}" clickable>
+          <q-item-section avatar>
+            <q-icon name="contact_support" size="md"/>
+          </q-item-section>
+          <q-item-section class="text-h6 text-weight-bold">About</q-item-section>
+        </q-item>
+
+      </q-list>
     </q-drawer>
 
-    <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered>
+    <q-drawer bordered show-if-above side="right">
       <!-- drawer content -->
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <router-view/>
     </q-page-container>
 
   </q-layout>
 </template>
 
 <script>
-import { ref } from 'vue'
+import {ref} from 'vue'
 
 export default {
-  setup () {
+  setup() {
     const leftDrawerOpen = ref(false)
-    const rightDrawerOpen = ref(false)
 
     return {
       leftDrawerOpen,
-      toggleLeftDrawer () {
+      toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value
       },
-
-      rightDrawerOpen,
-      toggleRightDrawer () {
-        rightDrawerOpen.value = !rightDrawerOpen.value
-      }
     }
   }
 }
