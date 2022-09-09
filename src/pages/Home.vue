@@ -44,11 +44,12 @@
         >
           <q-item
             v-for="qweet in qweets"
-            :key="qweet.date"
+            :key="qweet.id"
             class="q-py-md">
             <q-item-section avatar top>
               <q-avatar>
-                <q-img src="https://cdn.quasar.dev/img/avatar2.jpg"/>
+                <q-img
+                  src="https://media-exp1.licdn.com/dms/image/C4E03AQF3aIRxq4BlBw/profile-displayphoto-shrink_100_100/0/1599398358509?e=1668038400&v=beta&t=TBvwQjR_MjdYI9Cz85N_7dPI4Ux0hUDfX5Uvw9YWt44"/>
               </q-avatar>
             </q-item-section>
 
@@ -84,7 +85,7 @@
 <script setup>
 import {onMounted, ref} from 'vue'
 import moment from 'moment'
-import {collection, addDoc, onSnapshot, orderBy, query} from "firebase/firestore"
+import {doc, addDoc, collection, onSnapshot, orderBy, deleteDoc, query} from "firebase/firestore"
 import {db} from 'boot/firebase'
 
 let newQweetContent = ref()
@@ -95,6 +96,7 @@ onMounted(() => {
   onSnapshot(q, (snapshot) => {
     snapshot.docChanges().forEach((change) => {
       const qweetChange = change.doc.data()
+      qweetChange.id =change.doc.id
       if (change.type === "added") {
         console.log("New Qweet: ", qweetChange);
         qweets.value.unshift(qweetChange)
@@ -104,6 +106,8 @@ onMounted(() => {
       }
       if (change.type === "removed") {
         console.log("Removed Qweet: ", qweetChange);
+        let index = qweets.value.findIndex(qweet =>qweet.id===qweetChange.id)
+        qweets.value.splice(index, 1)
       }
     });
   });
@@ -120,19 +124,18 @@ async function addNewQweet(qweetContent) {
     content: qweetContent,
     date: Date.now()
   }
-  // qweets.value.unshift(newQweet)
+
   // add a new Qweet with a generated id
   const docRef = await addDoc(collection(db, "qweets"), newQweet);
   console.log("Document written with ID: ", docRef.id);
 
+  // clear qweet input field
   newQweetContent.value = '';
 }
 
 /** delete qweet */
-function deleteQweet(qweet) {
-  let dateToDelete = qweet.date
-  let index = qweets.value.findIndex(qweet => qweet.date === dateToDelete)
-  qweets.value.splice(index, 1)
+async function deleteQweet(qweet) {
+  await deleteDoc(doc(db, "qweets", qweet.id));
 }
 </script>
 <style lang="sass">
