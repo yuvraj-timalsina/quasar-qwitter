@@ -34,9 +34,12 @@
     <q-separator class="divider" color="grey-2" size="10px"/>
 
     <!-- qweet list -->
-    <q-list>
+    <q-list separator>
 
-      <q-item clickableq-py-md>
+      <q-item
+        v-for="qweet in qweets"
+        :key="qweet.date"
+        class="q-py-md">
         <q-item-section avatar top>
           <q-avatar>
             <q-img src="https://cdn.quasar.dev/img/avatar2.jpg"/>
@@ -53,11 +56,8 @@
             </span>
           </q-item-label>
           <q-item-label class="qweet-content text-body1">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-
-            A consequatur cupiditate doloremque eaque eius
-            enim, et eveniet, excepturi explicabo fuga, labore
-            libero officiis optio tempora totam? Cupiditate earum id.
+            {{qweet.content
+            }}
           </q-item-label>
           <div class="row qweet-icons justify-between q-mt-sm">
             <q-btn color="grey" flat icon="far fa-comment" round size="sm"/>
@@ -68,7 +68,7 @@
         </q-item-section>
 
         <q-item-section side top>
-          1 min ago
+          {{moment(qweet.date).fromNow() }}
         </q-item-section>
       </q-item>
 
@@ -77,9 +77,24 @@
 </template>
 
 <script setup>
-import {ref} from "vue";
+import { ref} from "vue";
+import moment from 'moment';
 
 const newQweetContent = ref("");
+const qweets = [
+  {
+    content: ' Lorem ipsum dolor sit amet, consectetur adipisicing elit. A consequatur cupiditate doloremque eaque eius enim, et eveniet, excepturi explicabo fuga, labore libero officiis optio tempora totam? Cupiditate earum id. ',
+    date: 1662706140824
+  },
+  {
+    content: ' Lorem ipsum dolor sit amet, consectetur adipisicing elit. A consequatur cupiditate doloremque eaque eius enim, et eveniet, excepturi explicabo fuga, labore libero officiis optio tempora totam? Cupiditate earum id. ',
+    date: 1662707170503
+  }
+]
+
+let props = defineProps( {
+  date:String
+});
 </script>
 <style lang="sass">
 .new-qweet
