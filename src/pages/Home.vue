@@ -83,19 +83,40 @@
 </template>
 
 <script setup>
-import {ref} from "vue";
-import moment from 'moment';
+import {onMounted, ref} from 'vue'
+import moment from 'moment'
+import { collection, query, orderBy, onSnapshot } from "firebase/firestore";
+import {db} from 'boot/firebase'
 
 let newQweetContent = ref();
+const q = query(collection(db,"qweets"), orderBy('date'));
+onMounted(()=> {
+
+ onSnapshot(q, (snapshot) => {
+    snapshot.docChanges().forEach((change) => {
+      const qweetChange = change.doc.data()
+      if (change.type === "added") {
+        console.log("New Qweet: ", qweetChange);
+        qweets.value.unshift(qweetChange)
+      }
+      if (change.type === "modified") {
+        console.log("Modified Qweet: ", qweetChange);
+      }
+      if (change.type === "removed") {
+        console.log("Removed Qweet: ", qweetChange);
+      }
+    });
+  });
+})
 const qweets = ref([
-  {
-    content: ' Opsum dolor sit amet, consectetur adipisicing elit. A consequatur cupiditate doloremque eaque eius enim, et eveniet, excepturi explicabo fuga, labore libero officiis optio tempora totam? Cupiditate earum id. ',
-    date: 1662706140824
-  },
-  {
-    content: ' Lorem ipsum dolor sit amet, consectetur adipisicing elit. A consequatur cupiditate doloremque eaque eius enim, et eveniet, excepturi explicabo fuga, labore libero officiis optio tempora totam? Cupiditate earum id. ',
-    date: 1662707170503
-  }
+  // {
+  //   content: ' Opsum dolor sit amet, consectetur adipisicing elit. A consequatur cupiditate doloremque eaque eius enim, et eveniet, excepturi explicabo fuga, labore libero officiis optio tempora totam? Cupiditate earum id. ',
+  //   date: 1662706140824
+  // },
+  // {
+  //   content: ' Lorem ipsum dolor sit amet, consectetur adipisicing elit. A consequatur cupiditate doloremque eaque eius enim, et eveniet, excepturi explicabo fuga, labore libero officiis optio tempora totam? Cupiditate earum id. ',
+  //   date: 1662707170503
+  // }
 ])
 
 let props = defineProps({
