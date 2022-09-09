@@ -22,21 +22,25 @@
       </div>
       <div class="col col-shrink">
         <q-btn
-          @click="addNewQweet"
           :disable="!newQweetContent"
           class="q-mb-lg"
           color="primary"
           label="Qweet"
           no-caps
           rounded
-          unelevated/>
+          unelevated
+          @click="addNewQweet(newQweetContent)"/>
       </div>
     </div>
     <q-separator class="divider" color="grey-2" size="10px"/>
 
     <!-- qweet list -->
     <q-list separator>
-
+      <transition-group
+        appear
+        enter-active-class="animated fadeIn slow"
+        leave-active-class="animated fadeOut slow"
+      >
       <q-item
         v-for="qweet in qweets"
         :key="qweet.date"
@@ -57,30 +61,30 @@
             </span>
           </q-item-label>
           <q-item-label class="qweet-content text-body1">
-            {{qweet.content}}
+            {{ qweet.content }}
           </q-item-label>
           <div class="row qweet-icons justify-between q-mt-sm">
             <q-btn color="grey" flat icon="far fa-comment" round size="sm"/>
             <q-btn color="grey" flat icon="fas fa-retweet" round size="sm"/>
             <q-btn color="grey" flat icon="far fa-heart" round size="sm"/>
-            <q-btn @click="deleteQweet(qweet)" color="grey" flat icon="fas fa-trash" round size="sm"/>
+            <q-btn color="grey" flat icon="fas fa-trash" round size="sm" @click="deleteQweet(qweet)"/>
           </div>
         </q-item-section>
 
         <q-item-section side top>
-          {{moment(qweet.date).fromNow() }}
+          {{ moment(qweet.date).fromNow() }}
         </q-item-section>
       </q-item>
-
+      </transition-group>
     </q-list>
   </q-page>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import {ref} from "vue";
 import moment from 'moment';
 
-const newQweetContent = ref();
+let newQweetContent = ref();
 const qweets = ref([
   {
     content: ' Opsum dolor sit amet, consectetur adipisicing elit. A consequatur cupiditate doloremque eaque eius enim, et eveniet, excepturi explicabo fuga, labore libero officiis optio tempora totam? Cupiditate earum id. ',
@@ -92,17 +96,18 @@ const qweets = ref([
   }
 ])
 
-let props = defineProps( {
-  date:String
+let props = defineProps({
+  date: String
 });
 
 /** add new qweet */
-function addNewQweet() {
+function addNewQweet(qweetContent) {
   let newQweet = {
-    content: newQweetContent,
+    content: qweetContent,
     date: Date.now()
   }
   qweets.value.unshift(newQweet)
+  newQweetContent.value = ''
 }
 
 /** delete qweet */
