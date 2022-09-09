@@ -4,7 +4,9 @@
       <q-toolbar>
         <q-btn dense flat icon="menu" round @click="toggleLeftDrawer" />
         <q-toolbar-title class="text-weight-bold">
-          <span class="gt-sm">Qwitter</span>
+          <span class="gt-sm">
+            {{$route.name}}
+          </span>
           <q-icon
             class="q-pa-md lt-md header-icon"
             color="primary"
@@ -32,14 +34,14 @@
 
       <!-- left nav links -->
       <q-list>
-        <q-item v-ripple :to="{ name: 'Home' }" clickable>
+        <q-item v-ripple :to="{ name: 'Home' }" clickable exact>
           <q-item-section avatar>
             <q-icon name="home" size="md" />
           </q-item-section>
           <q-item-section class="text-h6 text-weight-bold">Home</q-item-section>
         </q-item>
 
-        <q-item v-ripple :to="{ name: 'About' }" clickable>
+        <q-item v-ripple :to="{ name: 'About' }" clickable exact>
           <q-item-section avatar>
             <q-icon name="contact_support" size="md" />
           </q-item-section>
@@ -54,10 +56,10 @@
       <!-- drawer content -->
       <q-input
         class="q-ma-md"
-        outlined
-        rounded
-        placeholder="Search Qwitter"
         dense
+        outlined
+        placeholder="Search Qwitter"
+        rounded
       >
         <template v-slot:prepend>
           <q-icon name="search" />
@@ -65,17 +67,17 @@
       </q-input>
 
       <!-- qweet feed -->
-      <q-list separator padding>
+      <q-list padding separator>
         <q-item class="q-pa-md">
           <q-item-section>
-            <q-item-label overline class="text-grey">Programming</q-item-label>
+            <q-item-label class="text-grey" overline>Programming</q-item-label>
             <q-item-label class="text-weight-bold"
-              >Something amazing happened!</q-item-label
-            >
+              >Something amazing happened!
+            </q-item-label>
             <q-item-label caption
               >Secondary line text. Lorem ipsum dolor sit amet, consectetur
-              adipiscit elit.</q-item-label
-            >
+              adipiscit elit.
+            </q-item-label>
           </q-item-section>
 
           <q-item-section side top>
@@ -84,14 +86,14 @@
         </q-item>
         <q-item class="q-pa-md">
           <q-item-section>
-            <q-item-label overline class="text-grey">Programming</q-item-label>
+            <q-item-label class="text-grey" overline>Programming</q-item-label>
             <q-item-label class="text-weight-bold"
-              >Something amazing happened!</q-item-label
-            >
+              >Something amazing happened!
+            </q-item-label>
             <q-item-label caption
               >Secondary line text. Lorem ipsum dolor sit amet, consectetur
-              adipiscit elit.</q-item-label
-            >
+              adipiscit elit.
+            </q-item-label>
           </q-item-section>
 
           <q-item-section side top>
@@ -100,14 +102,14 @@
         </q-item>
         <q-item class="q-pa-md">
           <q-item-section>
-            <q-item-label overline class="text-grey">Programming</q-item-label>
+            <q-item-label class="text-grey" overline>Programming</q-item-label>
             <q-item-label class="text-weight-bold"
-              >Something amazing happened!</q-item-label
-            >
+              >Something amazing happened!
+            </q-item-label>
             <q-item-label caption
               >Secondary line text. Lorem ipsum dolor sit amet, consectetur
-              adipiscit elit.</q-item-label
-            >
+              adipiscit elit.
+            </q-item-label>
           </q-item-section>
 
           <q-item-section side top>
@@ -146,5 +148,4 @@ export default {
   bottom: 0
   left: 50%
   transform: translateX(-50%)
-
 </style>
