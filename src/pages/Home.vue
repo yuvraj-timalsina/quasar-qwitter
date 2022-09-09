@@ -1,5 +1,6 @@
 <template>
-  <q-page>
+  <q-page class="relative-position">
+    <q-scroll-area class="absolute fullscreen">
     <!-- qweet form -->
     <div class="row q-py-md q-px-sm items-end q-col-gutter-md">
       <div class="col">
@@ -58,6 +59,9 @@
             </strong>
             <span class="text-grey-7">
               @lorem_ipsum
+              <br class="lt-md"/>
+              &bull;
+               {{ moment(qweet.date).fromNow() }}
             </span>
           </q-item-label>
           <q-item-label class="qweet-content text-body1">
@@ -71,12 +75,10 @@
           </div>
         </q-item-section>
 
-        <q-item-section side top>
-          {{ moment(qweet.date).fromNow() }}
-        </q-item-section>
       </q-item>
       </transition-group>
     </q-list>
+    </q-scroll-area>
   </q-page>
 </template>
 
