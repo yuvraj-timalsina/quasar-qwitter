@@ -109,7 +109,7 @@ function addNewQweet(qweetContent) {
     date: Date.now()
   }
   qweets.value.unshift(newQweet)
-  newQweetContent.value = ''
+  newQweetContent.value = '';
 }
 
 /** delete qweet */
