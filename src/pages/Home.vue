@@ -22,6 +22,7 @@
       </div>
       <div class="col col-shrink">
         <q-btn
+          @click="addNewQweet"
           :disable="!newQweetContent"
           class="q-mb-lg"
           color="primary"
@@ -56,14 +57,13 @@
             </span>
           </q-item-label>
           <q-item-label class="qweet-content text-body1">
-            {{qweet.content
-            }}
+            {{qweet.content}}
           </q-item-label>
           <div class="row qweet-icons justify-between q-mt-sm">
             <q-btn color="grey" flat icon="far fa-comment" round size="sm"/>
             <q-btn color="grey" flat icon="fas fa-retweet" round size="sm"/>
             <q-btn color="grey" flat icon="far fa-heart" round size="sm"/>
-            <q-btn color="grey" flat icon="fas fa-trash" round size="sm"/>
+            <q-btn @click="deleteQweet(qweet)" color="grey" flat icon="fas fa-trash" round size="sm"/>
           </div>
         </q-item-section>
 
@@ -77,24 +77,40 @@
 </template>
 
 <script setup>
-import { ref} from "vue";
+import { ref } from "vue";
 import moment from 'moment';
 
-const newQweetContent = ref("");
-const qweets = [
+const newQweetContent = ref();
+const qweets = ref([
   {
-    content: ' Lorem ipsum dolor sit amet, consectetur adipisicing elit. A consequatur cupiditate doloremque eaque eius enim, et eveniet, excepturi explicabo fuga, labore libero officiis optio tempora totam? Cupiditate earum id. ',
+    content: ' Opsum dolor sit amet, consectetur adipisicing elit. A consequatur cupiditate doloremque eaque eius enim, et eveniet, excepturi explicabo fuga, labore libero officiis optio tempora totam? Cupiditate earum id. ',
     date: 1662706140824
   },
   {
     content: ' Lorem ipsum dolor sit amet, consectetur adipisicing elit. A consequatur cupiditate doloremque eaque eius enim, et eveniet, excepturi explicabo fuga, labore libero officiis optio tempora totam? Cupiditate earum id. ',
     date: 1662707170503
   }
-]
+])
 
 let props = defineProps( {
   date:String
 });
+
+/** add new qweet */
+function addNewQweet() {
+  let newQweet = {
+    content: newQweetContent,
+    date: Date.now()
+  }
+  qweets.value.unshift(newQweet)
+}
+
+/** delete qweet */
+function deleteQweet(qweet) {
+  let dateToDelete = qweet.date
+  let index = qweets.value.findIndex(qweet => qweet.date === dateToDelete)
+  qweets.value.splice(index, 1)
+}
 </script>
 <style lang="sass">
 .new-qweet
