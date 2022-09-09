@@ -2,10 +2,10 @@
   <q-layout view="lHr lpR fFf">
     <q-header bordered class="bg-white text-black">
       <q-toolbar>
-        <q-btn dense flat icon="menu" round @click="toggleLeftDrawer" />
+        <q-btn dense flat icon="menu" round @click="toggleLeftDrawer"/>
         <q-toolbar-title class="text-weight-bold">
           <span class="gt-sm">
-            {{$route.name}}
+            {{ $route.name }}
           </span>
           <q-icon
             class="q-pa-md lt-md header-icon"
@@ -36,17 +36,17 @@
       <q-list>
         <q-item v-ripple :to="{ name: 'Home' }" clickable exact>
           <q-item-section avatar>
-            <q-icon name="home" size="md" />
+            <q-icon name="home" size="md"/>
           </q-item-section>
           <q-item-section class="text-h6 text-weight-bold">Home</q-item-section>
         </q-item>
 
         <q-item v-ripple :to="{ name: 'About' }" clickable exact>
           <q-item-section avatar>
-            <q-icon name="contact_support" size="md" />
+            <q-icon name="contact_support" size="md"/>
           </q-item-section>
           <q-item-section class="text-h6 text-weight-bold"
-            >About
+          >About
           </q-item-section>
         </q-item>
       </q-list>
@@ -62,7 +62,7 @@
         rounded
       >
         <template v-slot:prepend>
-          <q-icon name="search" />
+          <q-icon name="search"/>
         </template>
       </q-input>
 
@@ -72,10 +72,10 @@
           <q-item-section>
             <q-item-label class="text-grey" overline>Programming</q-item-label>
             <q-item-label class="text-weight-bold"
-              >Something amazing happened!
+            >Something amazing happened!
             </q-item-label>
             <q-item-label caption
-              >Secondary line text. Lorem ipsum dolor sit amet, consectetur
+            >Secondary line text. Lorem ipsum dolor sit amet, consectetur
               adipiscit elit.
             </q-item-label>
           </q-item-section>
@@ -88,10 +88,10 @@
           <q-item-section>
             <q-item-label class="text-grey" overline>Programming</q-item-label>
             <q-item-label class="text-weight-bold"
-              >Something amazing happened!
+            >Something amazing happened!
             </q-item-label>
             <q-item-label caption
-              >Secondary line text. Lorem ipsum dolor sit amet, consectetur
+            >Secondary line text. Lorem ipsum dolor sit amet, consectetur
               adipiscit elit.
             </q-item-label>
           </q-item-section>
@@ -104,10 +104,10 @@
           <q-item-section>
             <q-item-label class="text-grey" overline>Programming</q-item-label>
             <q-item-label class="text-weight-bold"
-              >Something amazing happened!
+            >Something amazing happened!
             </q-item-label>
             <q-item-label caption
-              >Secondary line text. Lorem ipsum dolor sit amet, consectetur
+            >Secondary line text. Lorem ipsum dolor sit amet, consectetur
               adipiscit elit.
             </q-item-label>
           </q-item-section>
@@ -120,26 +120,18 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <router-view/>
     </q-page-container>
   </q-layout>
 </template>
 
-<script>
-import { ref } from "vue";
+<script setup>
+import {ref} from "vue";
 
-export default {
-  setup() {
-    const leftDrawerOpen = ref(false);
-
-    return {
-      leftDrawerOpen,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
-      },
-    };
-  },
-};
+const leftDrawerOpen = ref(false);
+const toggleLeftDrawer = () => {
+  leftDrawerOpen.value = !leftDrawerOpen.value
+}
 </script>
 
 <style lang="sass">
