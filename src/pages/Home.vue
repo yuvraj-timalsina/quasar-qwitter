@@ -71,7 +71,13 @@
               <div class="row qweet-icons justify-between q-mt-sm">
                 <q-btn color="grey" flat icon="far fa-comment" round size="sm"/>
                 <q-btn color="grey" flat icon="fas fa-retweet" round size="sm"/>
-                <q-btn color="grey" flat icon="far fa-heart" round size="sm"/>
+                <q-btn
+                  @click="toggleLike(qweet)"
+                  :icon="qweet.liked ? 'fas fa-heart' : 'far fa-heart'"
+                       :color="qweet.liked ? 'pink' : 'grey'"
+                       flat
+                       round
+                       size="sm"/>
                 <q-btn color="grey" flat icon="fas fa-trash" round size="sm" @click="deleteQweet(qweet)"/>
               </div>
             </q-item-section>
@@ -85,28 +91,31 @@
 <script setup>
 import {onMounted, ref} from 'vue'
 import moment from 'moment'
-import {doc, addDoc, collection, onSnapshot, orderBy, deleteDoc, query} from "firebase/firestore"
+import {addDoc, collection, updateDoc, deleteDoc, doc, onSnapshot, orderBy, query} from "firebase/firestore"
 import {db} from 'boot/firebase'
 
 let newQweetContent = ref()
 const q = query(collection(db, "qweets"), orderBy('date'))
 
 onMounted(() => {
+
   // get Qweets from firebase
   onSnapshot(q, (snapshot) => {
     snapshot.docChanges().forEach((change) => {
       const qweetChange = change.doc.data()
-      qweetChange.id =change.doc.id
+      qweetChange.id = change.doc.id
       if (change.type === "added") {
         console.log("New Qweet: ", qweetChange);
         qweets.value.unshift(qweetChange)
       }
       if (change.type === "modified") {
         console.log("Modified Qweet: ", qweetChange);
+        let index = qweets.value.findIndex(qweet => qweet.id === qweetChange.id)
+        Object.assign(qweets.value[index], qweetChange)
       }
       if (change.type === "removed") {
         console.log("Removed Qweet: ", qweetChange);
-        let index = qweets.value.findIndex(qweet =>qweet.id===qweetChange.id)
+        let index = qweets.value.findIndex(qweet => qweet.id === qweetChange.id)
         qweets.value.splice(index, 1)
       }
     });
@@ -122,20 +131,28 @@ let props = defineProps({
 async function addNewQweet(qweetContent) {
   let newQweet = {
     content: qweetContent,
-    date: Date.now()
+    date: Date.now(),
+    liked: false
   }
 
   // add a new Qweet with a generated id
-  const docRef = await addDoc(collection(db, "qweets"), newQweet);
-  console.log("Document written with ID: ", docRef.id);
+  const docRef = await addDoc(collection(db, "qweets"), newQweet)
+  console.log("Document written with ID: ", docRef.id)
 
   // clear qweet input field
-  newQweetContent.value = '';
+  newQweetContent.value = ''
 }
 
 /** delete qweet */
 async function deleteQweet(qweet) {
-  await deleteDoc(doc(db, "qweets", qweet.id));
+  await deleteDoc(doc(db, 'qweets', qweet.id))
+}
+
+/** update qweet */
+async function toggleLike(qweet) {
+  await updateDoc(doc(db, 'qweets', qweet.id), {
+    liked: !qweet.liked
+  })
 }
 </script>
 <style lang="sass">
