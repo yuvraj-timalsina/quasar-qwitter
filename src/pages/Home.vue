@@ -1,6 +1,6 @@
 <template>
   <q-page class="relative-position">
-    <q-scroll-area class="absolute fullscreen">
+    <q-scroll-area class="absolute full-width full-height">
       <!-- qweet form -->
       <div class="row q-py-md q-px-sm items-end q-col-gutter-md">
         <div class="col">
